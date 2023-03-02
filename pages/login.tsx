@@ -7,6 +7,10 @@ const IntroBG = styled.div`
   height: 100dvh;
   width: 100%;
   place-items: center;
+  align-items: center;
+  > div {
+    text-align: center;
+  }
   button {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
@@ -59,8 +63,8 @@ export default function Login() {
   return (
     <IntroBG>
       <div>
+        <h1>How well do you know your 10 top tracks on Spotify?</h1>
         <button onClick={handleLogin}>
-          <h1>How well do you know your 10 top tracks on Spotify?</h1>
           <span>Login to play</span>
         </button>
       </div>
