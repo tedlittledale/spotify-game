@@ -1,23 +1,70 @@
-import { signIn } from "next-auth/react";
-import Image from "next/image";
+import { signIn } from 'next-auth/react'
+import styled from 'styled-components'
 
+const IntroBG = styled.div`
+  background: linear-gradient(270deg, #00ffc8, #00f0d0);
+  display: grid;
+  height: 100dvh;
+  width: 100%;
+  place-items: center;
+  button {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    font-size: 1rem;
+    font-weight: 700;
+
+    background-color: transparent;
+    border: 0px;
+    border-radius: 500px;
+    display: inline-block;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    touch-action: manipulation;
+    transition-duration: 33ms;
+    transition-property: background-color, border-color, color, box-shadow,
+      filter, transform;
+    user-select: none;
+    vertical-align: middle;
+    transform: translate3d(0px, 0px, 0px);
+    padding: 0px;
+    min-inline-size: 0px;
+    cursor: pointer;
+    span {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      background-color: var(--background-base, #ffffff);
+      color: var(--text-base, #000000);
+      display: flex;
+      border-radius: 500px;
+      font-size: inherit;
+      min-block-size: 48px;
+      -webkit-box-align: center;
+      align-items: center;
+      -webkit-box-pack: center;
+      justify-content: center;
+      padding-block: 8px;
+      padding-inline: 32px;
+    }
+  }
+`
 
 export default function Login() {
   const handleLogin = () => {
-    signIn("spotify", { callbackUrl: "http://localhost:3000" });
-  };
+    signIn('spotify', { callbackUrl: 'http://localhost:3000' })
+  }
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center w-screen h-screen gap-20">
-        
-        <button
-          className="flex px-12 py-2 text-lg tracking-widest uppercase rounded-full focus:outline-none bg-primary hover:bg-opacity-80"
-          onClick={handleLogin}
-        >
-          Login
+    <IntroBG>
+      <div>
+        <button onClick={handleLogin}>
+          <h1>Gone in 60 seconds</h1>
+          <p>How well do you know your 20 top tracks on Spotify</p>
+          <span>Login to play</span>
         </button>
       </div>
-    </div>
-  );
+    </IntroBG>
+  )
 }

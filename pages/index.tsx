@@ -1,19 +1,22 @@
 import Head from 'next/head'
-import { GetServerSideProps } from "next";
-import { isAuthenticated } from "../utils/isAuthenticated";
-import { customGet } from "../utils/customGet";
+import styled from 'styled-components'
+import { GetServerSideProps } from 'next'
+import { isAuthenticated } from '../utils/isAuthenticated'
+import { customGet } from '../utils/customGet'
 import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import { getSession } from "next-auth/react";
+
+import { getSession } from 'next-auth/react'
 import styles from '@/styles/Home.module.css'
-import {SearchResults} from '../types/types'
-import {Shuffler} from '../Components/Shuffler';
+import { SearchResults } from '../types/types'
+import { Shuffler } from '../Components/Shuffler'
 
-const inter = Inter({ subsets: ['latin'] })
+const CustomMain = styled.main`
+  height: 100dvh;
+  width: 100%;
+`
 
-export default function Home({top20 } : {top20: any}) {
-
-  console.log({top20})
+export default function Home({ top20 }: { top20: any }) {
+  console.log({ top20 })
   return (
     <>
       <Head>
@@ -22,31 +25,30 @@ export default function Home({top20 } : {top20: any}) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <CustomMain>
         {!top20 ? <h1>Loading...</h1> : <Shuffler top20={top20.items} />}
-        
-      </main>
+      </CustomMain>
     </>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession(ctx);
+  const session = await getSession(ctx)
 
   if (!(await isAuthenticated(session))) {
     return {
       redirect: {
-        destination: "/login",
+        destination: '/login',
         permanent: false,
       },
-    };
+    }
   }
 
   const top20 = await customGet(
     `https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=20`,
     session
-  );
+  )
   console.log({ top20 })
 
-  return { props: {  top20 : top20 } };
-};
+  return { props: { top20: top20 } }
+}
