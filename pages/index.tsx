@@ -2,10 +2,11 @@ import Head from 'next/head'
 import styled from 'styled-components'
 import { GetServerSideProps } from 'next'
 import { isAuthenticated } from '../utils/isAuthenticated'
+import { useSession } from 'next-auth/react'
 import { customGet } from '../utils/customGet'
 import Image from 'next/image'
 
-import { getSession } from 'next-auth/react'
+import { getSession, signOut } from 'next-auth/react'
 import styles from '@/styles/Home.module.css'
 import { SearchResults } from '../types/types'
 import { Shuffler } from '../Components/Shuffler'
@@ -13,10 +14,60 @@ import { Shuffler } from '../Components/Shuffler'
 const CustomMain = styled.main`
   height: 100dvh;
   width: 100%;
+  background: linear-gradient(270deg, #00ffc8, #00f0d0);
+  .error {
+    display: grid;
+    place-items: center;
+    height: 100%;
+    button {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      font-size: 1rem;
+      font-weight: 700;
+
+      background-color: transparent;
+      border: 0px;
+      border-radius: 500px;
+      display: inline-block;
+      position: relative;
+      text-align: center;
+      text-decoration: none;
+      text-transform: none;
+      touch-action: manipulation;
+      transition-duration: 33ms;
+      transition-property: background-color, border-color, color, box-shadow,
+        filter, transform;
+      user-select: none;
+      vertical-align: middle;
+      transform: translate3d(0px, 0px, 0px);
+      padding: 0px;
+      min-inline-size: 0px;
+      cursor: pointer;
+      span {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        position: relative;
+        background-color: var(--background-base, #ffffff);
+        color: var(--text-base, #000000);
+        display: flex;
+        border-radius: 500px;
+        font-size: inherit;
+        min-block-size: 48px;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        padding-block: 8px;
+        padding-inline: 32px;
+      }
+    }
+  }
 `
 
 export default function Home({ top20 }: { top20: any }) {
   console.log({ top20 })
+  const { data: session, status } = useSession()
+  console.log({ session, top20 })
   return (
     <>
       <Head>
@@ -26,7 +77,27 @@ export default function Home({ top20 }: { top20: any }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <CustomMain>
-        {!top20 ? <h1>Loading...</h1> : <Shuffler top20={top20.items} />}
+        <>
+          {top20.error ? (
+            <div className="error">
+              {' '}
+              <h3>User not authorised</h3>
+              <p>
+                Please email{' '}
+                <a href="mailto:ted@tedspace.me">ted@tedspace.me</a> with the
+                email address you use to login into Spotify and I'll add you the
+                spotify allow list
+              </p>
+              <button onClick={() => signOut()}>
+                <span>Sign out</span>
+              </button>
+            </div>
+          ) : !top20 ? (
+            <h1>Loading...</h1>
+          ) : (
+            <Shuffler top20={top20.items} />
+          )}
+        </>
       </CustomMain>
     </>
   )
@@ -34,7 +105,7 @@ export default function Home({ top20 }: { top20: any }) {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx)
-
+  console.log({ session })
   if (!(await isAuthenticated(session))) {
     return {
       redirect: {

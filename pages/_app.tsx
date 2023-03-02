@@ -1,5 +1,6 @@
 import type { AppProps } from 'next/app'
 import { createGlobalStyle } from 'styled-components'
+import { SessionProvider } from 'next-auth/react'
 import '@fontsource/figtree'
 
 const GlobalStyle = createGlobalStyle`
@@ -30,11 +31,16 @@ ul{
 
 `
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) {
   return (
     <>
       <GlobalStyle />
-      <Component {...pageProps} />
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
     </>
   )
 }
