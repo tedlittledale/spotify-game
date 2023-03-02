@@ -41,6 +41,7 @@ const ShuffleBG = styled.div<ShuffleBGProps>`
   display: grid;
   place-items: center;
   > .intro {
+    padding: 20px;
     display: ${({ started }: { started: boolean }) =>
       started ? 'none' : 'block'};
   }
