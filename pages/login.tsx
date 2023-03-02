@@ -60,8 +60,7 @@ export default function Login() {
     <IntroBG>
       <div>
         <button onClick={handleLogin}>
-          <h1>Gone in 60 seconds</h1>
-          <p>How well do you know your 20 top tracks on Spotify</p>
+          <h1>How well do you know your 10 top tracks on Spotify?</h1>
           <span>Login to play</span>
         </button>
       </div>
