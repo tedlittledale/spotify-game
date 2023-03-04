@@ -14,16 +14,6 @@ interface GuesserProps {
   top20: any
   allUrls: any
 }
-const colors = [
-  '#00ffc8',
-  '#00f0d0',
-  '#00e2d8',
-  '#00d3e0',
-  '#00c5e7',
-  '#00b6ef',
-  '#00a8f7',
-  '#0099ff',
-]
 
 const GuesserBG = styled.div`
   background: linear-gradient(270deg, #00ffc8, #00f0d0);
@@ -41,7 +31,7 @@ const GuesserBG = styled.div`
     margin: 0;
     padding: 0;
     li {
-      padding: 10px 20px;
+      padding: 10px 15px;
       font-size: 18px;
       cursor: pointer;
       &:nth-child(1) {

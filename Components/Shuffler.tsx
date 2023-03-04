@@ -18,6 +18,9 @@ const colors = [
   '#00b6ef',
   '#00a8f7',
   '#0099ff',
+  '#00a8f7',
+  '#00b6ef',
+  '#00c5e7',
 ]
 
 const ShuffleBG = styled.div<ShuffleBGProps>`
@@ -29,7 +32,7 @@ const ShuffleBG = styled.div<ShuffleBGProps>`
     270deg,
     ${({ currentPreviewNo }) =>
       css`
-        ${colors[currentPreviewNo % 8]}, ${colors[(currentPreviewNo + 1) % 8]}
+        ${colors[currentPreviewNo % 11]}, ${colors[(currentPreviewNo + 1) % 11]}
       `}
   );
   background-size: 400% 400%;
@@ -105,8 +108,8 @@ export const Shuffler = ({ top20 }: { top20: any }) => {
         <div className="intro">
           <h2>How well do you know your top tracks?</h2>
           <h3>
-            Listen to a 2 second clip of your top 10 tracks and then try to name
-            each track
+            Listen to a supercut of your top 10 tracks (2 seconds per track) and
+            then try to name each track
           </h3>
           <h3>Tap anywhere to begin</h3>
         </div>
