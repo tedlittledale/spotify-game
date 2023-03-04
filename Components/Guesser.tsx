@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import { CustomAudio } from './CustomAudio'
+import { Button } from './Button'
 
 type Item = {
   id: number
@@ -10,6 +12,7 @@ type Item = {
 
 interface GuesserProps {
   top20: any
+  allUrls: any
 }
 const colors = [
   '#00ffc8',
@@ -26,7 +29,7 @@ const GuesserBG = styled.div`
   background: linear-gradient(270deg, #00ffc8, #00f0d0);
   height: 100%;
   display: grid;
-  grid: auto auto 1fr 1fr / 1fr;
+  grid: auto auto auto 1fr 1fr / 1fr;
   grid-gap: 20px;
   align-items: space-around;
   padding: 20px 0;
@@ -40,6 +43,7 @@ const GuesserBG = styled.div`
     li {
       padding: 10px 20px;
       font-size: 18px;
+      cursor: pointer;
       &:nth-child(1) {
         background: linear-gradient(270deg, #00ffc8, #00f0d0);
       }
@@ -72,13 +76,15 @@ const GuesserBG = styled.div`
       }
     }
   }
-  > p {
+  > p:last-child {
     text-align: center;
   }
 `
 
-export const Guesser: React.FC<GuesserProps> = ({ top20 }) => {
+export const Guesser: React.FC<GuesserProps> = ({ top20, allUrls }) => {
   console.log({ top20 })
+  const playerRef = useRef<any>(null)
+  const [currentPreviewNo, setCurrentPreviewNo] = useState<number | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [clearing, setClearing] = useState<Boolean>(false)
   const [matches, setMatches] = useState<String[]>([])
@@ -127,7 +133,7 @@ export const Guesser: React.FC<GuesserProps> = ({ top20 }) => {
   console.log(matches.length)
   return (
     <GuesserBG>
-      <h3>Now name those tracks</h3>
+      <h3>Now name those tracks </h3>
       <div ref={inputRef}>
         {!clearing ? (
           <ReactSearchAutocomplete<Item>
@@ -149,18 +155,47 @@ export const Guesser: React.FC<GuesserProps> = ({ top20 }) => {
           <div></div>
         )}
       </div>
+      <p>(click on tracks below to hear the 2 second preview again)</p>
       <ul>
         {Array(10)
           .fill(0)
           .map((_, idx) => (
-            <li key={idx}>
+            <li
+              key={idx}
+              onClick={() => {
+                setCurrentPreviewNo(idx * 2)
+                setTimeout(() => {
+                  playerRef.current.load()
+                  playerRef.current.play()
+                }, 10)
+
+                setTimeout(() => {
+                  playerRef.current.pause()
+                }, 2500)
+              }}
+            >
               {idx + 1} {matches[idx] ? `- ${matches[idx]}` : '...'}
             </li>
           ))}
       </ul>
       <p>
-        {matchesCount === 10 ? 'Congratulations, your know what you like!' : ''}
+        {matchesCount === 10 ? (
+          'Congratulations, your know what you like!'
+        ) : (
+          <Button
+            onClick={() => {
+              setMatches(trackItems.map(({ name }: { name: string }) => name))
+            }}
+          >
+            <>Reveal all tracks</>
+          </Button>
+        )}
       </p>
+      <CustomAudio
+        ref={playerRef}
+        src={allUrls[currentPreviewNo || 0]}
+        onPlay={(e) => {}}
+      />
     </GuesserBG>
   )
 }

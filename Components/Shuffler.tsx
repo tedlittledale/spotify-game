@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import { Guesser } from './Guesser'
+import { CustomAudio } from './CustomAudio'
 
 const GradientAnimation = keyframes`
     0%{background-position:0% 50%}
@@ -51,29 +52,6 @@ const ShuffleBG = styled.div<ShuffleBGProps>`
   }
 `
 
-const CustomAudio = styled.audio`
-  &::-webkit-media-controls-panel,
-  &::-webkit-media-controls-mute-button,
-  &::-webkit-media-controls-play-button,
-  &::-webkit-media-controls-timeline-container,
-  &::-webkit-media-controls-current-time-display,
-  &::-webkit-media-controls-time-remaining-display,
-  &::-webkit-media-controls-timeline,
-  &::-webkit-media-controls-volume-slider-container,
-  &::-webkit-media-controls-volume-slider,
-  &::-webkit-media-controls-seek-back-button,
-  &::-webkit-media-controls-seek-forward-button,
-  &::-webkit-media-controls-fullscreen-button,
-  &::-webkit-media-controls-rewind-button,
-  &::-webkit-media-controls-return-to-realtime-button,
-  &::-webkit-media-controls-toggle-closed-captions-button,
-  &::-webkit-media-controls-panel {
-    background: red;
-    -webkit-appearance: none;
-    opacity: 0;
-  }
-`
-
 interface ShuffleBGProps {
   currentPreviewNo: number
   started: boolean
@@ -117,7 +95,7 @@ export const Shuffler = ({ top20 }: { top20: any }) => {
 
   console.log({ allUrls, currentPreviewNo })
   if (finished) {
-    return <Guesser top20={top20} />
+    return <Guesser top20={top20} allUrls={allUrls} />
   }
   let audioSource = null
   let analyser = null
