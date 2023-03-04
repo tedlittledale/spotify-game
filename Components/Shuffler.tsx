@@ -79,19 +79,7 @@ export const Shuffler = ({ top20 }: { top20: any }) => {
     return () => {}
   }, [top20])
 
-  useEffect(() => {
-    const timer = setTimeout(
-      () => {
-        if (currentPreviewNo !== null && allUrls[currentPreviewNo + 1]) {
-          setCurrentPreviewNo(currentPreviewNo + 1)
-        } else if (currentPreviewNo !== null) {
-          setFinished(true)
-        }
-      },
-      (currentPreviewNo && currentPreviewNo % 2) === 0 ? 2000 : 1200
-    )
-    return () => clearTimeout(timer)
-  }, [currentPreviewNo, allUrls])
+  useEffect(() => {}, [currentPreviewNo, allUrls])
 
   console.log({ allUrls, currentPreviewNo })
   if (finished) {
@@ -133,9 +121,30 @@ export const Shuffler = ({ top20 }: { top20: any }) => {
           ref={playerRef}
           src={allUrls[currentPreviewNo || 0]}
           autoPlay={true}
+          onLoadedData={(e) => {
+            console.log({ e })
+            const timer = setTimeout(
+              () => {
+                if (
+                  currentPreviewNo !== null &&
+                  allUrls[currentPreviewNo + 1]
+                ) {
+                  console.log('playing next')
+                  setCurrentPreviewNo(currentPreviewNo + 1)
+                } else if (currentPreviewNo !== null) {
+                  setFinished(true)
+                }
+              },
+              (currentPreviewNo && currentPreviewNo % 2) === 0 ? 2000 : 1200
+            )
+          }}
           onPlay={(e) => {
             if (currentPreviewNo === null && playerRef?.current) {
               setCurrentPreviewNo(0)
+              const timer = setTimeout(() => {
+                console.log('playing next')
+                setCurrentPreviewNo(1)
+              }, 2000)
             }
           }}
         />
