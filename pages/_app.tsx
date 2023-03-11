@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app'
 import { createGlobalStyle } from 'styled-components'
 import { SessionProvider } from 'next-auth/react'
+import * as Sentry from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
 import '@fontsource/figtree'
 
 const GlobalStyle = createGlobalStyle`
@@ -29,7 +31,18 @@ ul{
   list-style: none;
 }
 
+
+
 `
+
+Sentry.init({
+  dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0',
+  integrations: [new BrowserTracing()],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+})
 
 export default function App({
   Component,
