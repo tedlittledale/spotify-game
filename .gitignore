@@ -37,9 +37,3 @@ next-env.d.ts
 
 # Local Netlify folder
 .netlify
-
-# Sentry
-.sentryclirc
-
-# Sentry
-next.config.original.js
